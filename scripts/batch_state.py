@@ -13,6 +13,7 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import List, Optional, Tuple
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 
@@ -86,12 +87,12 @@ def save_state(path: Path, state: dict) -> None:
     path.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def parse_indices(value: str | None, job_count: int) -> list[int]:
+def parse_indices(value: Optional[str], job_count: int) -> List[int]:
     if not value:
         return []
     if value.strip().lower() == "all":
         return list(range(1, job_count + 1))
-    result: list[int] = []
+    result: List[int] = []
     for part in value.split(","):
         try:
             index = int(part.strip())
@@ -132,7 +133,7 @@ def validate_job(job: object, position: int) -> dict:
     return normalized
 
 
-def read_batch(path: Path, allow_partial: bool) -> tuple[str | None, list[dict]]:
+def read_batch(path: Path, allow_partial: bool) -> Tuple[Optional[str], List[dict]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     batch_id = None
     if isinstance(payload, dict):

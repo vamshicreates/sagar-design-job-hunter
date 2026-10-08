@@ -7,6 +7,21 @@ description: Find, verify, rank, and learn from batches of up to five Hyderabad-
 
 Find high-fit roles from live sources, present no more than five at a time, and use the user's feedback to improve later batches.
 
+## Runtime setup
+
+This skill has no third-party Python packages. It needs Python 3.9 or newer only for the local batch-history helper; live job discovery uses the agent's web/browser capabilities.
+
+- On Windows, use `py -3` when available, otherwise `python`.
+- On macOS/Linux, use `python3`.
+- Treat `<python>` in commands below as the selected launcher.
+- After a new Windows installation or when diagnosing a machine, read [references/windows-setup.md](references/windows-setup.md) and run:
+
+  ```text
+  <python> <skill-dir>\scripts\doctor.py --network
+  ```
+
+Run state commands from the user's job-search workspace, not from the installed skill directory, so `.job-hunter` state stays with the user's work.
+
 ## Load the working context
 
 1. Read [references/candidate-profile.md](references/candidate-profile.md). Treat its **confirmed evidence**, **inferences**, and **unknowns** differently.
@@ -14,7 +29,7 @@ Find high-fit roles from live sources, present no more than five at a time, and 
 3. If `.job-hunter/sagar-design-job-hunter/state.json` exists, run:
 
    ```bash
-   python3 <skill-dir>/scripts/batch_state.py show
+   <python> <skill-dir>/scripts/batch_state.py show
    ```
 
    Use the returned seen URLs and feedback signals. Do not turn one unexplained rejection into a permanent universal rule.
@@ -54,7 +69,7 @@ After the table, add only material cautions: hard tool gaps, experience mismatch
 Write the batch as JSON following [references/job-batch-method.md](references/job-batch-method.md), then record it:
 
 ```bash
-python3 <skill-dir>/scripts/batch_state.py record-batch --batch <batch.json>
+<python> <skill-dir>/scripts/batch_state.py record-batch --batch <batch.json>
 ```
 
 Use `--allow-partial` only when fewer than five qualified live roles exist. Do not place private contact details in batch JSON.
@@ -70,8 +85,8 @@ End with: `Reply Approve, Reject 2 and 4, or tell me what to change for the next
 Record feedback with:
 
 ```bash
-python3 <skill-dir>/scripts/batch_state.py feedback --batch-id <id> --approved all
-python3 <skill-dir>/scripts/batch_state.py feedback --batch-id <id> --rejected 2,4 --reason "<user's reason>"
+<python> <skill-dir>/scripts/batch_state.py feedback --batch-id <id> --approved all
+<python> <skill-dir>/scripts/batch_state.py feedback --batch-id <id> --rejected 2,4 --reason "<user's reason>"
 ```
 
 Never resurface rejected or already-seen URLs unless the user asks to reconsider them.
